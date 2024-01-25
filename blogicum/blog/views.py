@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseNotFound
 
 posts = [
     {
@@ -49,9 +50,12 @@ def index(request):
     return render(request, template_name)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template_name = 'blog/detail.html'
-    context = {'post': posts[id]}
+    try:
+        context = {'post': posts[post_id]}
+    except IndexError:
+        return HttpResponseNotFound('<h1>404 Page not found</h1>')
     return render(request, template_name, context)
 
 
