@@ -47,7 +47,11 @@ posts = [
 
 def index(request):
     template_name = 'blog/index.html'
-    return render(request, template_name)
+    try:
+        context = {'posts': reversed(posts)}
+    except IndexError:
+        return HttpResponseNotFound('<h1>404 Page not found</h1>')
+    return render(request, template_name, context)
 
 
 def post_detail(request, post_id):
